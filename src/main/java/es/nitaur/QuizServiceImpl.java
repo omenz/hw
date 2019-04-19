@@ -8,12 +8,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuizServiceImpl implements QuizService {
@@ -110,13 +113,15 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public List<QuizQuestion> updateQuestions(List<QuizQuestion> quizQuestions) {
-        List<QuizQuestion> updatedQuestions = Lists.newArrayList();
-        for (QuizQuestion quizQuestion : quizQuestions) {
-            QuizQuestion questionToUpdate = quizQuestionRepository.findOne(quizQuestion.getId());
-            questionToUpdate.setQuestion(quizQuestion.getQuestion());
-            updatedQuestions.add(quizQuestionRepository.save(questionToUpdate));
-        }
-        return updatedQuestions;
+        return quizQuestions.stream().noneMatch(q -> StringUtils.isEmpty(q.getQuestion())) ?
+                quizQuestionRepository.save(quizQuestions.stream()
+                        .map(q -> {
+                            QuizQuestion questionToUpdate = quizQuestionRepository.findOne(q.getId());
+                            questionToUpdate.setQuestion(q.getQuestion());
+                            return questionToUpdate;
+                        })
+                        .collect(Collectors.toList())
+                ) : Collections.emptyList();
     }
 
     @Override
