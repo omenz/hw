@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="Alex">
+        <createTable tableName="QUIZ_FORM">
+            <column name="id" type="bigint(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="language" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quiz_fk" type="bigint(20)">
+                <constraints references="QUIZ(id)" foreignKeyName="FK_QUIZ_FORM_QuizId"
+                             nullable="false"/>
+            </column>
+            <column name="quiz_section_fk" type="bigint(20)">
+                <constraints references="QUIZ_SECTION(id)" foreignKeyName="FK_QUIZ_FORM_QuizSectionId"
+                             nullable="true"/>
+            </column>
+        </createTable>
+
+        <addColumn tableName="QUIZ_SECTION">
+            <column name="quiz_form_fk" type="bigint(20)">
+                <constraints references="QUIZ_FORM(id)" foreignKeyName="FK_QUIZ_SECTION_QuizFormId"
+                             nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="QUIZ_SECTION">
+            <column name="parent_fk" type="bigint(20)">
+                <constraints references="QUIZ_SECTION(id)" foreignKeyName="FK_QUIZ_SECTION_ParentSectionId"
+                             nullable="true"/>
+            </column>
+        </addColumn>
+
+        <!-- Old data migration, create the new mandatory quiz - quiz_form - quiz_section relationship  -->
+        <sql>
+            INSERT INTO QUIZ_FORM(language, quiz_fk, quiz_section_fk) SELECT 'EN' AS language, quiz_fk, id FROM QUIZ_SECTION;
+
+            UPDATE QUIZ_SECTION qs
+            SET quiz_form_fk = (
+                SELECT id FROM QUIZ_FORM qf
+                WHERE qs.id = qf.quiz_section_fk);
+        </sql>
+
+        <!-- Remove the old QUIZ fk column from SECTION table, now section references the FORM table instead -->
+        <dropColumn tableName="QUIZ_SECTION" columnName="quiz_fk"/>
+        <!-- Remove temporary quiz section fk column which is required only for data migration -->
+        <dropColumn tableName="QUIZ_FORM" columnName="quiz_section_fk"/>
+    </changeSet>
+</databaseChangeLog>

@@ -48,17 +48,17 @@ public class QuizController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Quiz> createQuiz(@RequestBody final Quiz quiz) {
 
-        List<QuizSection> sections = quiz.getSections();
-        for (QuizSection section : sections) {
-            section.setQuiz(quiz);
-            List<QuizQuestion> quizQuestions = section.getQuizQuestions();
+        List<QuizForm> forms = quiz.getForms();
+        for (QuizForm form : forms) {
+            form.setQuiz(quiz);
+            List<QuizQuestion> quizQuestions = form.getSection().getQuizQuestions();
             for (QuizQuestion quizQuestion : quizQuestions) {
-                quizQuestion.setSection(section);
+                quizQuestion.setSection(form.getSection());
             }
         }
 
         final Quiz savedQuiz = quizService.create(quiz);
-        return new ResponseEntity<Quiz>(savedQuiz, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedQuiz, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/api/quiz/delete/{id}",

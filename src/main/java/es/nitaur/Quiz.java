@@ -16,10 +16,9 @@ public class Quiz extends GenericEntity {
     @NotNull
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "quiz_fk")
+    @OneToMany(mappedBy = "quiz", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    private List<QuizSection> sections;
+    private List<QuizForm> forms;
 
     public String getName() {
         return name;
@@ -29,11 +28,11 @@ public class Quiz extends GenericEntity {
         this.name = name;
     }
 
-    public List<QuizSection> getSections() {
-        return sections;
+    public List<QuizForm> getForms() {
+        return forms;
     }
 
-    public void setSections(List<QuizSection> sections) {
-        this.sections = sections;
+    public void setForms(List<QuizForm> forms) {
+        this.forms = forms;
     }
 }

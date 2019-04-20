@@ -18,9 +18,17 @@ public class QuizSection extends GenericEntity {
     @Fetch(FetchMode.SUBSELECT)
     private List<QuizQuestion> quizQuestions;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_fk")
-    private Quiz quiz;
+    @OneToOne
+    @JoinColumn(name = "quiz_form_fk")
+    private QuizForm quizForm;
+
+    @OneToMany(mappedBy="parentSection", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<QuizSection> childSections;
+
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="parent_fk")
+    private QuizSection parentSection;
 
     public List<QuizQuestion> getQuizQuestions() {
         return quizQuestions;
@@ -31,11 +39,28 @@ public class QuizSection extends GenericEntity {
     }
 
     @JsonIgnore
-    public Quiz getQuiz() {
-        return quiz;
+    public QuizForm getQuizForm() {
+        return quizForm;
     }
 
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
+    public void setQuizForm(QuizForm quizForm) {
+        this.quizForm = quizForm;
+    }
+
+    @JsonIgnore
+    public QuizSection getParentSection() {
+        return parentSection;
+    }
+
+    public void setParentSection(QuizSection parentSection) {
+        this.parentSection = parentSection;
+    }
+
+    public List<QuizSection> getChildSections() {
+        return childSections;
+    }
+
+    public void setChildSections(List<QuizSection> childSections) {
+        this.childSections = childSections;
     }
 }
