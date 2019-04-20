@@ -19,6 +19,8 @@ public interface QuizService {
 
     QuizQuestion answerQuestion(Long id, List<QuizAnswer> quizAnswers);
 
+    QuizQuestion answerQuestion(Long formId, Long id, List<QuizAnswer> quizAnswers);
+
     QuizQuestion getQuestion(Long id);
 
     Collection<QuizQuestion> getAllQuestions();
@@ -26,4 +28,10 @@ public interface QuizService {
     List<QuizQuestion> updateQuestions(List<QuizQuestion> quizQuestions);
 
     List<QuizQuestion> getQuestions(Long sectionId);
+
+    void deleteForm(Long id);
+
+    QuizForm createForm(Long quizId, QuizForm form);
+
+    QuizForm updateForm(Long id, QuizForm form);
 }

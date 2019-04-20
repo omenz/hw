@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class QuizController {
@@ -103,4 +104,50 @@ public class QuizController {
         return new ResponseEntity<QuizQuestion>(updatedQuestion, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/quiz/{id}/form", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<QuizForm>> getForms(@PathVariable("id") final Long id) {
+        return Optional.ofNullable(quizService.findOne(id))
+                .map(quiz -> new ResponseEntity<>(quiz.getForms(), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    
+    @RequestMapping(value = "/api/quiz/{quizId}/form",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuizForm> createForm(@PathVariable("quizId") final Long quizId, @RequestBody final QuizForm form) {
+        List<QuizQuestion> quizQuestions = form.getSection().getQuizQuestions();
+        for (QuizQuestion quizQuestion : quizQuestions) {
+            quizQuestion.setSection(form.getSection());
+        }
+        QuizForm createdForm = quizService.createForm(quizId, form);
+        return new ResponseEntity<QuizForm>(createdForm, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/api/quiz/form/{id}",
+            method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuizForm> updateForm(@PathVariable("id") final Long id, @RequestBody final QuizForm form) {
+        QuizForm updatedForm = quizService.updateForm(id, form);
+        return new ResponseEntity<QuizForm>(updatedForm, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/quiz/form/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<QuizForm> deleteForm(@PathVariable("id") final Long id) {
+        quizService.deleteForm(id);
+        return new ResponseEntity<QuizForm>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/api/quiz/form/{formId}/answerQuestion/{questionId}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuizQuestion> answer(@PathVariable("formId") final Long formId,
+                                               @PathVariable("questionId") final Long questionId,
+                                               @RequestBody final List<QuizAnswer> quizAnswers) {
+        QuizQuestion updatedQuestion = quizService.answerQuestion(formId, questionId, quizAnswers);
+        return new ResponseEntity<QuizQuestion>(updatedQuestion, HttpStatus.OK);
+    }
 }

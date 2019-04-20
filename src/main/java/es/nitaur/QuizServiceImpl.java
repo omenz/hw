@@ -1,6 +1,6 @@
 package es.nitaur;
 
-import com.google.common.collect.Lists;
+import es.nitaur.repository.QuizFormRepository;
 import es.nitaur.repository.QuizQuestionRepository;
 import es.nitaur.repository.QuizRepository;
 import org.slf4j.Logger;
@@ -25,11 +25,15 @@ public class QuizServiceImpl implements QuizService {
 
     private QuizRepository quizRepository;
     private QuizQuestionRepository quizQuestionRepository;
+    private QuizFormRepository quizFormRepository;
 
     @Autowired
-    public QuizServiceImpl(QuizRepository quizRepository, QuizQuestionRepository quizQuestionRepository) {
+    public QuizServiceImpl(QuizRepository quizRepository,
+                           QuizQuestionRepository quizQuestionRepository,
+                           QuizFormRepository quizFormRepository) {
         this.quizRepository = quizRepository;
         this.quizQuestionRepository = quizQuestionRepository;
+        this.quizFormRepository = quizFormRepository;
     }
 
     @Override
@@ -95,6 +99,21 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    @Transactional
+    public QuizQuestion answerQuestion(Long formId, Long id, List<QuizAnswer> quizAnswers) {
+        QuizQuestion questionToUpdate = quizQuestionRepository.findOne(id);
+        if (questionToUpdate == null || !questionToUpdate.getSection().getQuizForm().getId().equals(formId)) {
+            logger.error("Attempted to answer Question, but Question is not found");
+            throw new NoResultException(
+                    "Cannot answer Question with supplied id. The object is not found.");
+        }
+        questionToUpdate.setAnswers(quizAnswers);
+        questionToUpdate.setUpdateCount(questionToUpdate.getUpdateCount() + 1);
+        QuizQuestion savedQuestion = quizQuestionRepository.save(questionToUpdate);
+        return savedQuestion;
+    }
+
+    @Override
     public QuizQuestion getQuestion(Long id) {
         QuizQuestion questions = quizQuestionRepository.findOne(id);
         if (questions == null) {
@@ -140,4 +159,62 @@ public class QuizServiceImpl implements QuizService {
         return all;
     }
 
+    @Override
+    @Transactional
+    public QuizForm createForm(Long quizId, QuizForm form) {
+        if (form.getId() != null) {
+            String msg = "Cannot create new Quiz with supplied id. The id attribute must be null to create an entity.";
+            logger.error(msg);
+            throw new EntityExistsException(msg);
+        }
+        Quiz quiz = new Quiz();
+        quiz.setId(quizId);
+        form.setQuiz(quiz);
+        form.getSection().setQuizForm(form);
+        populateSectionForPersistence(form.getSection());
+        return quizFormRepository.save(form);
+    }
+
+    @Override
+    @Transactional
+    public void deleteForm(Long id) {
+        QuizForm formToRemove = selectForUpdate(id);
+        Quiz quiz = formToRemove.getQuiz();
+        quiz.getForms().remove(formToRemove);
+        quizRepository.save(quiz);
+    }
+
+    @Override
+    @Transactional
+    public QuizForm updateForm(Long id, QuizForm form) {
+        QuizForm formToUpdate = selectForUpdate(id);
+        formToUpdate.setLanguage(form.getLanguage());
+        formToUpdate.setSection(form.getSection());
+        formToUpdate.getSection().setQuizForm(formToUpdate);
+        populateSectionForPersistence(formToUpdate.getSection());
+        return quizFormRepository.save(formToUpdate);
+    }
+
+    private QuizForm selectForUpdate(Long id) {
+        QuizForm formToUpdate = quizFormRepository.findOne(id);
+        if (formToUpdate == null) {
+            String msg = "QuizForm with supplied id not found.";
+            logger.error(msg);
+            throw new NoResultException(msg);
+        }
+        return formToUpdate;
+    }
+    
+    private void populateSectionForPersistence(QuizSection parentSection) {
+        parentSection.getChildSections().forEach(child -> {
+            child.setParentSection(parentSection);
+            populateSectionForPersistence(child);
+        });
+        populateQuestionsForPersistence(parentSection);
+    }
+
+    private void populateQuestionsForPersistence(QuizSection section) {
+        final List<QuizQuestion> questionsToUpdate = section.getQuizQuestions();
+        questionsToUpdate.forEach(question -> question.setSection(section));
+    }
 }
