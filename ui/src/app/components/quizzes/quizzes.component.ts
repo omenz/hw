@@ -6,17 +6,33 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'app-quizzes',
   templateUrl: './quizzes.component.html',
-  styleUrls: ['./quizzes.component.sass']
+  styleUrls: ['./quizzes.component.scss']
 })
 export class QuizzesComponent implements OnInit {
 
   private quizzes: Observable<Array<Quiz>>;
+  private languages = new Set<string>();
+  private selectedLanguage: string;
 
   constructor(private quizService: QuizService) { }
 
   ngOnInit() {
     this.quizzes = this.quizService.getQuizzes();
-    this.quizzes.subscribe(quiz => console.log(quiz));
+    this.quizzes.subscribe(quizzes => {
+      quizzes.forEach(quiz => {
+        quiz.forms.forEach(form => this.languages.add(form.language));
+        this.selectedLanguage = this.languages.values().next().value;
+      });
+      console.log(quizzes);
+    });
   }
 
+  private onLanguageSelect(language: string) {
+    this.selectedLanguage = language;
+  }
+
+  private quizHasSelectedLanguage(quiz: Quiz): boolean {
+    let language =  this.selectedLanguage;
+    return !!quiz.forms.find(form => form.language == language);
+  }
 }

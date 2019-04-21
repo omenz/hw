@@ -8,12 +8,12 @@ export abstract class Entity {
 
 export class Quiz extends Entity{
   name: string;
-  form: QuizForm;
-  
-  constructor(id: number, name: string, form: QuizForm) {
+  forms: Array<QuizForm>;
+
+  constructor(id: number, name: string, forms: Array<QuizForm>) {
     super(id);
     this.name = name;
-    this.form = form;
+    this.forms = forms;
   }
 }
 

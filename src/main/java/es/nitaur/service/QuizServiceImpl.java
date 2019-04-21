@@ -54,8 +54,8 @@ public class QuizServiceImpl implements QuizService {
         }
         quiz.getForms().forEach(form -> {
             form.setQuiz(quiz);
-            form.getSection().getQuizQuestions()
-                    .forEach(question -> question.setSection(form.getSection()));
+            form.getSection().setQuizForm(form);
+            populateSectionForPersistence(form.getSection());
         });
         return quizRepository.save(quiz);
     }

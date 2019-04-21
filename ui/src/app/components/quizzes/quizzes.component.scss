@@ -1,0 +1,10 @@
+table.table {
+  th {
+    &:nth-child(0) {
+      width: 70px;
+    }
+    &:nth-child(1) {
+      width: 100px;
+    }
+  }
+}
