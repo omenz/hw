@@ -1,9 +1,15 @@
-package es.nitaur;
+package es.nitaur.service;
 
 import com.google.common.collect.Lists;
-import es.nitaur.repository.QuizFormRepository;
-import es.nitaur.repository.QuizQuestionRepository;
-import es.nitaur.repository.QuizRepository;
+import es.nitaur.persistence.model.quiz.Quiz;
+import es.nitaur.persistence.model.quiz.QuizForm;
+import es.nitaur.persistence.model.quiz.QuizQuestion;
+import es.nitaur.persistence.model.quiz.QuizSection;
+import es.nitaur.persistence.repository.QuizFormRepository;
+import es.nitaur.persistence.repository.QuizQuestionRepository;
+import es.nitaur.persistence.repository.QuizRepository;
+import es.nitaur.service.QuizService;
+import es.nitaur.service.QuizServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Matchers;
