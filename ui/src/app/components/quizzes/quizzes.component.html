@@ -1,3 +1,14 @@
-<p>
-  quizzes works!
-</p>
+<table *ngIf="(quizzes | async) as quizzes" class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody class="table-striped">
+    <tr *ngFor="let quiz of quizzes">
+      <td>{{ quiz.id }}</td>
+      <td>{{ quiz.name }}</td>
+    </tr>
+  </tbody>
+</table>

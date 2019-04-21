@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {QuizService} from "../../core/services/quiz.service";
+import {Quiz} from "../../core/domain/model/quiz";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-quizzes',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuizzesComponent implements OnInit {
 
-  constructor() { }
+  private quizzes: Observable<Array<Quiz>>;
+
+  constructor(private quizService: QuizService) { }
 
   ngOnInit() {
+    this.quizzes = this.quizService.getQuizzes();
+    this.quizzes.subscribe(quiz => console.log(quiz));
   }
 
 }
