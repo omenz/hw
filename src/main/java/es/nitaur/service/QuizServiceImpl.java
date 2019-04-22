@@ -190,6 +190,9 @@ public class QuizServiceImpl implements QuizService {
     }
 
     private void populateQuestionsForPersistence(final QuizSection section) {
-        section.getQuizQuestions().forEach(question -> question.setSection(section));
+        section.getQuizQuestions().forEach(question -> {
+            question.setSection(section);
+            question.getAnswers().forEach(answer -> answer.setQuestion(question));
+        });
     }
 }
