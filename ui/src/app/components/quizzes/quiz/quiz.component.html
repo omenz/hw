@@ -1,11 +1,25 @@
-<div *ngIf="(quiz | async) as quiz">
-  <h1>{{ quiz.id }}. {{ quiz.name }}</h1>
-  <div *ngIf="findFormForSelectedLanguage(quiz) as form">
-    <div *ngFor="let question of form.section.quizQuestions">
-      {{ question.question }}
-      <div *ngFor="let answer of question.answers">
-        {{ answer.answer }}
+<ng-container *ngIf="(quiz | async) as quiz">
+  <h2>{{ quiz.id }}. {{ quiz.name }}</h2>
+  <ng-template [ngIf]="formHasQuestions()" [ngIfElse]="emptyForm">
+    <div class="card">
+      <div class="card-body" *ngIf="findFormForSelectedLanguage(quiz) as form">
+        <form>
+          <ng-container *ngFor="let question of form.section.quizQuestions">
+            <div class="form-group">
+              <label>{{ question.question }}</label>
+              <input type="text"
+                     class="form-control"
+                     name="{{ question.id }}"
+                     ngModel="{{answers.get(question.id).answer}}"
+                     (ngModelChange)="saveAnswer(question.id, $event)"
+              />
+            </div>
+          </ng-container>
+        </form>
       </div>
     </div>
-  </div>
-</div>
+  </ng-template>
+  <ng-template #emptyForm>
+    <h2>This quiz is empty :(</h2>
+  </ng-template>
+</ng-container>

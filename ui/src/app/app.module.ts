@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { QuizzesComponent } from './components/quizzes/quizzes.component';
 import {HttpClientModule} from "@angular/common/http";
 import { QuizComponent } from './components/quizzes/quiz/quiz.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { QuizComponent } from './components/quizzes/quiz/quiz.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [
     HttpClientModule,

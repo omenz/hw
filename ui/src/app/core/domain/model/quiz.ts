@@ -59,4 +59,8 @@ export class QuizAnswer extends Entity{
     super(id);
     this.answer = answer;
   }
+
+  static new(): QuizAnswer {
+    return new QuizAnswer(undefined, undefined);
+  }
 }

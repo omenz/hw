@@ -12,7 +12,7 @@
   </thead>
   <tbody>
   <ng-container *ngFor="let quiz of quizzes">
-    <tr *ngIf="quizHasSelectedLanguage(quiz)" [routerLink]="['/quiz', quiz.id, selectedLanguage]">
+    <tr *ngIf="quizHasSelectedLanguage(quiz)" [routerLink]="['quiz', quiz.id]">
       <td>{{ selectedLanguage }}</td>
       <td>{{ quiz.id }}</td>
       <td>{{ quiz.name }}</td>
