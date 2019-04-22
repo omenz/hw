@@ -10,6 +10,7 @@ import {FormsModule} from "@angular/forms";
 import { FormsComponent } from './components/quizzes/forms/forms.component';
 import { ManageQuizzesComponent } from './components/manage-quizzes/manage-quizzes.component';
 import { EditQuizComponent } from './components/manage-quizzes/edit-quiz/edit-quiz.component';
+import { CreateQuizComponent } from './components/manage-quizzes/create-quiz/create-quiz.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { EditQuizComponent } from './components/manage-quizzes/edit-quiz/edit-qu
     QuizComponent,
     FormsComponent,
     ManageQuizzesComponent,
-    EditQuizComponent
+    EditQuizComponent,
+    CreateQuizComponent
   ],
   imports: [
     BrowserModule,

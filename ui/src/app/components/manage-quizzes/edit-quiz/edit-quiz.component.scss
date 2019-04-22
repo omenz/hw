@@ -4,14 +4,6 @@ div.card {
   max-width: 800px;
   margin: 20px auto 30px auto;
 
-  ul li {
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, .03);
-    }
-  }
-
   div.card-footer {
     border-top: none;
   }

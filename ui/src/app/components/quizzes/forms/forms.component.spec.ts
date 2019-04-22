@@ -7,6 +7,8 @@ import {QuizzesComponent} from "../quizzes.component";
 import {QuizComponent} from "../quiz/quiz.component";
 import {FormsModule} from "@angular/forms";
 import {ManageQuizzesComponent} from "../../manage-quizzes/manage-quizzes.component";
+import {CreateQuizComponent} from "../../manage-quizzes/create-quiz/create-quiz.component";
+import {EditQuizComponent} from "../../manage-quizzes/edit-quiz/edit-quiz.component";
 
 describe('FormsComponent', () => {
   let component: FormsComponent;
@@ -19,6 +21,8 @@ describe('FormsComponent', () => {
         QuizzesComponent,
         QuizComponent,
         ManageQuizzesComponent,
+        CreateQuizComponent,
+        EditQuizComponent,
       ],
       imports: [
         AppRoutingModule,
