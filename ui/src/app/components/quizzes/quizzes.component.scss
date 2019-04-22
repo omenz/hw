@@ -1,12 +1,15 @@
 table.table {
-  th {
-    &:nth-child(0) {
-      width: 70px;
-    }
-    &:nth-child(1) {
-      width: 100px;
+  tr {
+    height: 57px;
+  }
+  thead {
+    th {
+      &:nth-child(1) {
+        width: 70px;
+      }
     }
   }
+
   tbody tr {
     cursor: pointer;
   }
