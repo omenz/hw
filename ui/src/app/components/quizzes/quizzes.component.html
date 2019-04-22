@@ -1,0 +1,16 @@
+<table *ngIf="(quizzes | async) as quizzes" class="table table-hover">
+  <thead class="thead-dark">
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let quiz of quizzes">
+    <tr [routerLink]="[quiz.id, 'forms']">
+      <td>{{ quiz.id }}</td>
+      <td>{{ quiz.name }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>

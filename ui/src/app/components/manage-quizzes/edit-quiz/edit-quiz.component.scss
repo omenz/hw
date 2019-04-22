@@ -1,0 +1,18 @@
+div.card {
+  width: 50%;
+  min-width: 400px;
+  max-width: 800px;
+  margin: 20px auto 30px auto;
+
+  div.card-footer {
+    border-top: none;
+  }
+  div.card-body {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+
+    button.btn.btn-secondary {
+      margin-right: 10px;
+    }
+  }
+}
+
