@@ -1,9 +1,10 @@
-package es.nitaur;
+package es.nitaur.service;
 
 import com.google.common.collect.Lists;
-import es.nitaur.repository.QuizFormRepository;
-import es.nitaur.repository.QuizQuestionRepository;
-import es.nitaur.repository.QuizRepository;
+import es.nitaur.persistence.model.quiz.*;
+import es.nitaur.persistence.repository.QuizFormRepository;
+import es.nitaur.persistence.repository.QuizQuestionRepository;
+import es.nitaur.persistence.repository.QuizRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -30,11 +31,7 @@ public class QuizServiceImplTest {
         Assert.assertEquals(updatedForm.getSection(), updateResult.getSection());
         Assert.assertEquals(updatedForm.getLanguage(), updateResult.getLanguage());
         Assert.assertEquals("should populate section with related form", existingForm, updatedForm.getSection().getQuizForm());
-        Assert.assertFalse(updateResult.getSection().getQuizQuestions().isEmpty());
-        updateResult.getSection().getQuizQuestions().forEach(question ->
-                Assert.assertEquals("should populate question with related section", updateResult.getSection(), question.getSection()));
-        updateResult.getSection().getChildSections().forEach(section ->
-                Assert.assertNull("child sections are not related to form", section.getQuizForm()));
+        assertParentRelationEntityIsPopulated(updateResult);
 
         Mockito.verify(quizFormRepository, Mockito.atLeastOnce()).findOne(formId);
         Mockito.verify(quizFormRepository, Mockito.atLeastOnce()).save(existingForm);
@@ -51,12 +48,8 @@ public class QuizServiceImplTest {
         Assert.assertEquals(newForm.getSection(), createResult.getSection());
         Assert.assertEquals(newForm.getLanguage(), createResult.getLanguage());
         Assert.assertEquals("should populate section with related form", newForm, newForm.getSection().getQuizForm());
-        Assert.assertFalse(createResult.getSection().getQuizQuestions().isEmpty());
-        createResult.getSection().getQuizQuestions().forEach(question ->
-                Assert.assertEquals("should populate question with related section", createResult.getSection(), question.getSection()));
-        createResult.getSection().getChildSections().forEach(section ->
-                Assert.assertNull("child sections are not related to form", section.getQuizForm()));
-
+        assertParentRelationEntityIsPopulated(newForm);
+        
         Mockito.verify(quizFormRepository, Mockito.atLeastOnce()).save(newForm);
     }
 
@@ -73,6 +66,19 @@ public class QuizServiceImplTest {
         
         Mockito.verify(quizFormRepository, Mockito.atLeastOnce()).findOne(formId);
         Mockito.verify(quizRepository, Mockito.atLeastOnce()).save(quiz);
+    }
+
+    private void assertParentRelationEntityIsPopulated(QuizForm quizForm) {
+        Assert.assertFalse(quizForm.getSection().getQuizQuestions().isEmpty());
+        quizForm.getSection().getQuizQuestions().forEach(question ->
+                Assert.assertEquals("should populate question with related section", quizForm.getSection(), question.getSection()));
+        quizForm.getSection().getChildSections().forEach(section ->
+                Assert.assertNull("child sections are not related to form", section.getQuizForm()));
+        quizForm.getSection().getQuizQuestions()
+                .forEach(quizQuestion -> {
+                    quizQuestion.getAnswers().forEach(answer ->
+                            Assert.assertEquals("should populate answer with related question", quizQuestion, answer.getQuestion()));
+                });
     }
 
     private QuizForm existingForm(Long id) {
@@ -128,6 +134,17 @@ public class QuizServiceImplTest {
         quizQuestion.setId(id);
         quizQuestion.setQuestion(question);
         quizQuestion.setUpdateCount(0L);
+        quizQuestion.setAnswers(Lists.newArrayList(
+                createTestAnswer(1L, "Answer 1"),
+                createTestAnswer(2L, "Answer 2")
+        ));
         return quizQuestion;
+    }
+
+    private QuizAnswer createTestAnswer(Long id, String answer) {
+        QuizAnswer quizAnswer = new QuizAnswer();
+        quizAnswer.setId(id);
+        quizAnswer.setAnswer(answer);
+        return quizAnswer;
     }
 }

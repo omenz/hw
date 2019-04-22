@@ -1,4 +1,4 @@
-package es.nitaur;
+package es.nitaur.api;
 
 import org.json.JSONArray;
 import org.json.JSONException;
