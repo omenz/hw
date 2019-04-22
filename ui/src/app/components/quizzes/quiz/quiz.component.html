@@ -2,7 +2,7 @@
   <h2>{{ quiz.id }}. {{ quiz.name }}</h2>
   <ng-template [ngIf]="formHasQuestions()" [ngIfElse]="emptyForm">
     <div class="card">
-      <div class="card-body" *ngIf="findFormForSelectedLanguage(quiz) as form">
+      <div class="card-body">
         <span *ngIf="this.saved" class="float-right badge badge-pill badge-success">Saved</span>
         <div *ngIf="this.saveInProgress" class="float-right spinner-grow spinner-grow-sm" role="status">
           <span class="sr-only">Loading...</span>

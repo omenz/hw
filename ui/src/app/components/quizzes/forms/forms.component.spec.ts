@@ -1,22 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { QuizzesComponent } from './quizzes.component';
+import {FormsComponent} from './forms.component';
+import {AppRoutingModule} from "../../../app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
-import {AppRoutingModule} from "../../app-routing.module";
-import {QuizComponent} from "./quiz/quiz.component";
+import {QuizzesComponent} from "../quizzes.component";
+import {QuizComponent} from "../quiz/quiz.component";
 import {FormsModule} from "@angular/forms";
-import {FormsComponent} from "./forms/forms.component";
 
-describe('QuizzesComponent', () => {
-  let component: QuizzesComponent;
-  let fixture: ComponentFixture<QuizzesComponent>;
+describe('FormsComponent', () => {
+  let component: FormsComponent;
+  let fixture: ComponentFixture<FormsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        FormsComponent,
         QuizzesComponent,
         QuizComponent,
-        FormsComponent,
       ],
       imports: [
         AppRoutingModule,
@@ -28,7 +28,7 @@ describe('QuizzesComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuizzesComponent);
+    fixture = TestBed.createComponent(FormsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

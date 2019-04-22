@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {QuizService} from "../../../core/services/quiz.service";
 import {Observable, Subject} from "rxjs";
-import {Quiz, QuizAnswer, QuizForm} from "../../../core/domain/model/quiz";
+import {Quiz, QuizAnswer, QuizForm, QuizSection} from "../../../core/domain/model/quiz";
 import {debounceTime, distinctUntilChanged} from "rxjs/internal/operators";
 
 @Component({
@@ -14,7 +14,7 @@ export class QuizComponent implements OnInit {
 
   private answerChanged: Subject<Answer> = new Subject<Answer>();
   private quiz: Observable<Quiz>;
-  private selectedLanguage: string;
+  private form: QuizForm;
   private answers: Map<number, QuizAnswer> = new Map();
   private saveInProgress: boolean = false;
   private saved: boolean = false;
@@ -35,20 +35,16 @@ export class QuizComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-        this.selectedLanguage = params['language'];
-        this.quiz = this.quizService.getQuiz(params['id']);
+        this.quiz = this.quizService.getQuiz(params['quizId']);
         this.quiz.subscribe(quiz => {
-          this.findFormForSelectedLanguage(quiz).section.quizQuestions.forEach(question => {
+          this.form = quiz.forms.find(form => form.id == params['formId']);
+          this.form.section.quizQuestions.forEach(question => {
             let answer = question.answers[0];
             this.answers.set(question.id, answer ? answer : QuizAnswer.new());
           })
         })
       }
     );
-  }
-
-  findFormForSelectedLanguage(quiz: Quiz): QuizForm {
-    return quiz.forms.find(form => form.language == this.selectedLanguage);
   }
 
   formHasQuestions(): boolean {

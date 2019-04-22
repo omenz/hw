@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {QuizzesComponent} from "./components/quizzes/quizzes.component";
 import {QuizComponent} from "./components/quizzes/quiz/quiz.component";
+import {FormsComponent} from "./components/quizzes/forms/forms.component";
 
 const routes: Routes = [
-  {path: '', component: QuizzesComponent},
-  {path: ':language', component: QuizzesComponent},
-  {path: ':language/quiz/:id', component: QuizComponent},
+  {path: 'quizzes', component: QuizzesComponent},
+  {path: 'quizzes/:id/forms', component: FormsComponent},
+  {path: 'quizzes/:quizId/forms/:formId', component: QuizComponent},
 ];
 
 @NgModule({

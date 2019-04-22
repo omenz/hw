@@ -1,0 +1,16 @@
+<table *ngIf="(forms | async) as forms" class="table table-hover">
+  <thead class="thead-dark">
+  <tr>
+    <th>#</th>
+    <th>Language</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let form of forms">
+    <tr [routerLink]="[form.id]">
+      <td>{{ form.id }}</td>
+      <td>{{ form.language }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>

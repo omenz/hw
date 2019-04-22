@@ -5,6 +5,7 @@ import {AppRoutingModule} from "../../../app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
 import {QuizzesComponent} from "../quizzes.component";
 import {FormsModule} from "@angular/forms";
+import {FormsComponent} from "../forms/forms.component";
 
 describe('QuizComponent', () => {
   let component: QuizComponent;
@@ -15,6 +16,7 @@ describe('QuizComponent', () => {
       declarations: [
         QuizComponent,
         QuizzesComponent,
+        FormsComponent,
       ],
       imports: [
         AppRoutingModule,
