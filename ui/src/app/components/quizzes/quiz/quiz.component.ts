@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {QuizService} from "../../../core/services/quiz.service";
 import {Observable, Subject} from "rxjs";
-import {Quiz, QuizAnswer, QuizForm, QuizSection} from "../../../core/domain/model/quiz";
+import {Quiz, QuizAnswer, QuizForm} from "../../../core/domain/model/quiz";
 import {debounceTime, distinctUntilChanged} from "rxjs/internal/operators";
 
 @Component({

@@ -1,0 +1,41 @@
+<ng-container *ngIf="quiz">
+  <div class="card">
+    <div class="card-header">
+      <div class="form-group">
+        <label>Quiz name</label>
+        <input class="form-control" value="{{ quiz.name }}" [readonly]="quiz.id"/>
+      </div>
+    </div>
+    <div class="card-body clearfix" *ngFor="let form of quiz.forms">
+      <form>
+        <div class="form-group">
+          <label>Form language</label>
+          <input class="form-control"
+                 ngModel="{{ form.language }}"
+                 (ngModelChange)="onFormLanguageChange(form, $event)"
+                 name="language-{{form.id}}"
+                 maxlength="100"
+          />
+        </div>
+        <label class="d-block">Questions</label>
+        <ng-container *ngFor="let question of form.section.quizQuestions; let idx = index">
+          <div class="form-group">
+            <input type="text"
+                   class="form-control"
+                   name="q-{{form.id}}-{{ idx }}"
+                   ngModel="{{ question.question }}"
+                   (ngModelChange)="onQuestionChange(question, $event)"
+                   maxlength="100"
+            />
+          </div>
+        </ng-container>
+        <button class="btn btn-danger" (click)="deleteForm(form.id)">Delete form</button>
+        <button class="btn btn-primary float-right" (click)="updateForm(form)">Save Form</button>
+        <button class="btn btn-secondary float-right" (click)="addQuestion(form)">Add question</button>
+      </form>
+    </div>
+    <div class="card-footer clearfix">
+      <button class="btn btn-secondary float-right" (click)="addForm(quiz.id)">Add Form</button>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,22 @@
+<table *ngIf="(quizzes | async) as quizzes" class="table table-hover">
+  <thead class="thead-dark">
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>
+      <button type="button" class="btn btn-primary btn-sm float-right" [routerLink]="['create']">Create</button>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let quiz of quizzes">
+    <tr>
+      <td [routerLink]="['edit', quiz.id]">{{ quiz.id }}</td>
+      <td [routerLink]="['edit', quiz.id]">{{ quiz.name }}</td>
+      <td>
+        <button type="button" class="btn btn-danger btn-sm float-right" (click)="deleteQuiz(quiz)">Delete</button>
+      </td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>

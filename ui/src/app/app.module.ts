@@ -8,13 +8,17 @@ import {HttpClientModule} from "@angular/common/http";
 import { QuizComponent } from './components/quizzes/quiz/quiz.component';
 import {FormsModule} from "@angular/forms";
 import { FormsComponent } from './components/quizzes/forms/forms.component';
+import { ManageQuizzesComponent } from './components/manage-quizzes/manage-quizzes.component';
+import { EditQuizComponent } from './components/manage-quizzes/edit-quiz/edit-quiz.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QuizzesComponent,
     QuizComponent,
-    FormsComponent
+    FormsComponent,
+    ManageQuizzesComponent,
+    EditQuizComponent
   ],
   imports: [
     BrowserModule,

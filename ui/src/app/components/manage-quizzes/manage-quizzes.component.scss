@@ -1,0 +1,19 @@
+table.table {
+  th {
+    &:nth-child(1) {
+      width: 70px;
+    }
+    &:nth-child(3) {
+      width: 70px;
+    }
+  }
+  tbody tr {
+    cursor: pointer;
+
+    td {
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

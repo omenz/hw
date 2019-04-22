@@ -1,24 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuizComponent } from './quiz.component';
-import {AppRoutingModule} from "../../../app-routing.module";
+import { ManageQuizzesComponent } from './manage-quizzes.component';
+import {AppRoutingModule} from "../../app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
-import {QuizzesComponent} from "../quizzes.component";
 import {FormsModule} from "@angular/forms";
-import {FormsComponent} from "../forms/forms.component";
-import {ManageQuizzesComponent} from "../../manage-quizzes/manage-quizzes.component";
+import {QuizzesComponent} from "../quizzes/quizzes.component";
+import {FormsComponent} from "../quizzes/forms/forms.component";
+import {QuizComponent} from "../quizzes/quiz/quiz.component";
 
-describe('QuizComponent', () => {
-  let component: QuizComponent;
-  let fixture: ComponentFixture<QuizComponent>;
+describe('ManageQuizzesComponent', () => {
+  let component: ManageQuizzesComponent;
+  let fixture: ComponentFixture<ManageQuizzesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        QuizComponent,
+        ManageQuizzesComponent,
         QuizzesComponent,
         FormsComponent,
-        ManageQuizzesComponent,
+        QuizComponent,
       ],
       imports: [
         AppRoutingModule,
@@ -30,7 +30,7 @@ describe('QuizComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuizComponent);
+    fixture = TestBed.createComponent(ManageQuizzesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
