@@ -1,0 +1,11 @@
+<div *ngIf="(quiz | async) as quiz">
+  <h1>{{ quiz.id }}. {{ quiz.name }}</h1>
+  <div *ngIf="findFormForSelectedLanguage(quiz) as form">
+    <div *ngFor="let question of form.section.quizQuestions">
+      {{ question.question }}
+      <div *ngFor="let answer of question.answers">
+        {{ answer.answer }}
+      </div>
+    </div>
+  </div>
+</div>

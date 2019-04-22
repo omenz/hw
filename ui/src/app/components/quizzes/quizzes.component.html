@@ -10,9 +10,9 @@
     <th>Name</th>
   </tr>
   </thead>
-  <tbody class="table-striped">
+  <tbody>
   <ng-container *ngFor="let quiz of quizzes">
-    <tr *ngIf="quizHasSelectedLanguage(quiz)">
+    <tr *ngIf="quizHasSelectedLanguage(quiz)" [routerLink]="['/quiz', quiz.id, selectedLanguage]">
       <td>{{ selectedLanguage }}</td>
       <td>{{ quiz.id }}</td>
       <td>{{ quiz.name }}</td>

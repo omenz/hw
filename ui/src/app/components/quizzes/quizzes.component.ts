@@ -10,9 +10,9 @@ import {Observable} from "rxjs";
 })
 export class QuizzesComponent implements OnInit {
 
-  private quizzes: Observable<Array<Quiz>>;
-  private languages = new Set<string>();
-  private selectedLanguage: string;
+  protected quizzes: Observable<Array<Quiz>>;
+  protected languages = new Set<string>();
+  protected selectedLanguage: string;
 
   constructor(private quizService: QuizService) { }
 

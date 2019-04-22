@@ -15,4 +15,8 @@ export class QuizService {
   getQuizzes(): Observable<Array<Quiz>> {
     return this.httpClient.get<Array<Quiz>>(API_URL);
   }
+
+  getQuiz(id: number): Observable<Quiz> {
+    return this.httpClient.get<Quiz>(`${API_URL}/${id}`);
+  }
 }

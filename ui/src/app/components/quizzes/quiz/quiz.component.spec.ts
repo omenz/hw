@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuizzesComponent } from './quizzes.component';
+import { QuizComponent } from './quiz.component';
+import {AppRoutingModule} from "../../../app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
-import {AppRoutingModule} from "../../app-routing.module";
-import {QuizComponent} from "./quiz/quiz.component";
+import {QuizzesComponent} from "../quizzes.component";
 
-describe('QuizzesComponent', () => {
-  let component: QuizzesComponent;
-  let fixture: ComponentFixture<QuizzesComponent>;
+describe('QuizComponent', () => {
+  let component: QuizComponent;
+  let fixture: ComponentFixture<QuizComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        QuizzesComponent,
         QuizComponent,
+        QuizzesComponent,
       ],
       imports: [
         AppRoutingModule,
@@ -24,7 +24,7 @@ describe('QuizzesComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuizzesComponent);
+    fixture = TestBed.createComponent(QuizComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
