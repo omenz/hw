@@ -23,7 +23,6 @@ export class QuizzesComponent implements OnInit {
         quiz.forms.forEach(form => this.languages.add(form.language));
         this.selectedLanguage = this.languages.values().next().value;
       });
-      console.log(quizzes);
     });
   }
 

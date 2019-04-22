@@ -3,6 +3,10 @@
   <ng-template [ngIf]="formHasQuestions()" [ngIfElse]="emptyForm">
     <div class="card">
       <div class="card-body" *ngIf="findFormForSelectedLanguage(quiz) as form">
+        <span *ngIf="this.saved" class="float-right badge badge-pill badge-success">Saved</span>
+        <div *ngIf="this.saveInProgress" class="float-right spinner-grow spinner-grow-sm" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
         <form>
           <ng-container *ngFor="let question of form.section.quizQuestions">
             <div class="form-group">
@@ -10,6 +14,7 @@
               <input type="text"
                      class="form-control"
                      name="{{ question.id }}"
+                     maxlength="100"
                      ngModel="{{answers.get(question.id).answer}}"
                      (ngModelChange)="saveAnswer(question.id, $event)"
               />

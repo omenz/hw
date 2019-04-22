@@ -17,6 +17,7 @@ export class QuizComponent implements OnInit {
   private selectedLanguage: string;
   private answers: Map<number, QuizAnswer> = new Map();
   private saveInProgress: boolean = false;
+  private saved: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private quizService: QuizService,
@@ -24,11 +25,10 @@ export class QuizComponent implements OnInit {
     this.answerChanged
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(model => {
-        this.saveInProgress = true;
         this.quizService.saveAnswer(model.questionId, model.answer)
-          .subscribe(quizQuestion => {
-            console.log(quizQuestion);
+          .subscribe(() => {
             this.saveInProgress = false;
+            this.saved = true;
           })
       });
   }
@@ -56,6 +56,8 @@ export class QuizComponent implements OnInit {
   }
 
   saveAnswer(questionId: number, answer: string): void {
+    this.saved = false;
+    this.saveInProgress = true;
     this.answerChanged.next({questionId, answer});
   }
 }
